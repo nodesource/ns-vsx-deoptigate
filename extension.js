@@ -7,6 +7,7 @@ const DeoptigateWatcher = require('./lib/deoptigate-watcher')
 const DeoptigateProcessor = require('./lib/deoptigate-processor')
 const DeoptigateSummaryView = require('./lib/deoptigate-summary-view')
 const DeoptigateStatusbar = require('./lib/deoptigate-statusbar')
+const DeoptigateDecorator = require('./lib/deoptigate-decorator')
 
 function activate(context) {
   // TODO: figure out where we want the log files and how to make the
@@ -18,6 +19,7 @@ function activate(context) {
   const deoptigateProcessor = new DeoptigateProcessor(projectRoot)
   const summaryView = new DeoptigateSummaryView()
   const statusbar = new DeoptigateStatusbar()
+  const decorator = new DeoptigateDecorator(context)
 
   const showSummaryCommand =
     commands.registerCommand('deoptigate:toggle-summary', () => summaryView.toggle())
@@ -27,6 +29,7 @@ function activate(context) {
     const res = deoptigateProcessor.process(info)
     summaryView.update(res)
     statusbar.update(res)
+    decorator.update(info)
   }
 
   watcher
