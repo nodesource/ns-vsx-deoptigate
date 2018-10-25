@@ -1,7 +1,7 @@
 'use strict'
 
 const path = require('path')
-const { commands, Uri, window } = require('vscode')
+const { commands, Uri, window, workspace } = require('vscode')
 
 const DeoptigateWatcher = require('./lib/deoptigate-watcher')
 const DeoptigateProcessor = require('./lib/deoptigate-processor')
@@ -19,12 +19,11 @@ async function openFile(fullPath) {
 }
 
 function activate(context) {
-  // TODO: figure out where we want the log files and how to make the
-  // run task store them there.
-  const root = path.join(__dirname, 'tmp')
-  const projectRoot = path.join(__dirname, '..', 'ns-vsx-deoptigate.samples')
-
-  const watcher = new DeoptigateWatcher(root)
+  const workspaceRoot = workspace.workspaceFolders[0]
+  // TODO: wait for workspace to open and then complete activation
+  if (workspaceRoot == null) return
+  const projectRoot = workspaceRoot.uri.fsPath
+  const watcher = new DeoptigateWatcher()
   const deoptigateProcessor = new DeoptigateProcessor(projectRoot)
   const summaryView = new DeoptigateSummaryView()
   const statusbar = new DeoptigateStatusbar()

@@ -29,7 +29,6 @@
     "@types/mocha": "^2.2.42"
   },
   "dependencies": {
-    "chokidar": "~2.0.4",
     "deoptigate": "~0.4.2"
   }
 }
