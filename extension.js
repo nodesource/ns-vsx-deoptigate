@@ -1,13 +1,22 @@
 'use strict'
 
 const path = require('path')
-const { commands } = require('vscode')
+const { commands, Uri, window } = require('vscode')
 
 const DeoptigateWatcher = require('./lib/deoptigate-watcher')
 const DeoptigateProcessor = require('./lib/deoptigate-processor')
 const DeoptigateSummaryView = require('./lib/deoptigate-summary-view')
 const DeoptigateStatusbar = require('./lib/deoptigate-statusbar')
 const DeoptigateDecorator = require('./lib/deoptigate-decorator')
+
+async function openFile(fullPath) {
+  const uri = Uri.parse(`file://${fullPath}`)
+  try {
+    await commands.executeCommand('vscode.open', uri)
+  } catch (err) {
+    window.showErrorMessage(`Unable to open ${fullPath}\n`, err)
+  }
+}
 
 function activate(context) {
   // TODO: figure out where we want the log files and how to make the
@@ -22,7 +31,10 @@ function activate(context) {
   const decorator = new DeoptigateDecorator(context)
 
   const showSummaryCommand =
-    commands.registerCommand('deoptigate:toggle-summary', () => summaryView.toggle())
+    commands.registerCommand(
+        'deoptigate:toggle-summary'
+      , () => summaryView.toggle()
+    )
   context.subscriptions.push(showSummaryCommand)
 
   function ondeoptigateUpdate(info) {
@@ -35,6 +47,8 @@ function activate(context) {
   watcher
     .on('error', console.error)
     .on('update', ondeoptigateUpdate.bind(deoptigateProcessor))
+
+  summaryView.on('open-file', openFile)
 }
 
 function deactivate() {}
