@@ -1,6 +1,5 @@
 'use strict'
 
-const path = require('path')
 const { commands, Uri, window, workspace } = require('vscode')
 
 const DeoptigateWatcher = require('./lib/deoptigate-watcher')
@@ -8,6 +7,7 @@ const DeoptigateProcessor = require('./lib/deoptigate-processor')
 const DeoptigateSummaryView = require('./lib/deoptigate-summary-view')
 const DeoptigateStatusbar = require('./lib/deoptigate-statusbar')
 const DeoptigateDecorator = require('./lib/deoptigate-decorator')
+const openDeoptigatePage = require('./lib/deoptigate-open-page')
 
 async function openFile(fullPath) {
   const uri = Uri.parse(`file://${fullPath}`)
@@ -36,18 +36,20 @@ function activate(context) {
     )
   context.subscriptions.push(showSummaryCommand)
 
-  function ondeoptigateUpdate(info) {
+  function ondeoptigateUpdate({ info, logFile }) {
     const res = deoptigateProcessor.process(info)
-    summaryView.update(res)
+    summaryView.update(res, { projectRoot, logFile })
     statusbar.update(res)
     decorator.update(info)
   }
 
   watcher
-    .on('error', console.error)
+    .on('error', err => window.showErrorMessage(`Log file watcher error\n`, err))
     .on('update', ondeoptigateUpdate.bind(deoptigateProcessor))
 
-  summaryView.on('open-file', openFile)
+  summaryView
+    .on('open-file', openFile)
+    .on('open-deoptigate', ({ logFile, projectRoot }) => openDeoptigatePage(logFile, projectRoot))
 }
 
 function deactivate() {}
