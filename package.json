@@ -15,20 +15,66 @@
   ],
   "main": "./extension",
   "contributes": {
-    "commands": []
+    "commands": [],
+    "debuggers": [
+      {
+        "type": "NodeSource",
+        "request": "launch",
+        "label": "NodeSource",
+        "runtime": "node",
+        "languages": [
+          "javascript",
+          "typescript",
+          "javascriptreact",
+          "typescriptreact"
+        ],
+        "configurationSnippets": [
+          {
+            "type": "node",
+            "label": "NodeSource: deoptigate",
+            "description": "Run app and generate deoptigate data to see optimization feedback in editor.",
+            "body": {
+              "type": "node",
+              "request": "launch",
+              "name": "${2:deoptigate}",
+              "program": "^\"\\${workspaceFolder}/${1:app.js}\"",
+              "runtimeArgs": [
+                "--trace-ic",
+                "--logfile=${workspaceFolder}/.vscode/deoptigate.log",
+                "--nologfile-per-isolate"
+              ]
+            }
+          }
+        ],
+        "initialConfigurations": [
+          {
+            "type": "node",
+            "request": "launch",
+            "name": "deoptigate",
+            "program": "^\"\\${workspaceFolder}/app.js\"",
+            "runtimeArgs": [
+              "--trace-ic",
+              "--logfile=${workspaceFolder}/.vscode/deoptigate.log",
+              "--nologfile-per-isolate"
+            ]
+          }
+        ]
+      }
+    ]
   },
   "scripts": {
     "postinstall": "node ./node_modules/vscode/bin/install",
     "test": "node ./node_modules/vscode/bin/test"
   },
   "devDependencies": {
-    "typescript": "^2.6.1",
-    "vscode": "^1.1.21",
-    "eslint": "^4.11.0",
+    "@types/mocha": "^2.2.42",
     "@types/node": "^8.10.25",
-    "@types/mocha": "^2.2.42"
+    "eslint": "^4.11.0",
+    "typescript": "^2.6.1",
+    "vscode": "^1.1.21"
   },
   "dependencies": {
-    "deoptigate": "~0.4.2"
+    "deoptigate": "~0.4.2",
+    "opn": "~5.4.0"
   }
 }
