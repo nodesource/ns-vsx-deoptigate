@@ -20,7 +20,7 @@
       {
         "type": "NodeSource",
         "request": "launch",
-        "label": "NodeSource",
+        "label": "NodeSource: deoptigate",
         "runtime": "node",
         "languages": [
           "javascript",
@@ -36,11 +36,11 @@
             "body": {
               "type": "node",
               "request": "launch",
-              "name": "${2:deoptigate}",
+              "name": "NS|deoptigate:${2}",
               "program": "^\"\\${workspaceFolder}/${1:app.js}\"",
               "runtimeArgs": [
                 "--trace-ic",
-                "--logfile=${workspaceFolder}/.vscode/deoptigate.log",
+                "^\"--logfile=\\${workspaceFolder}/.vscode/deoptigate.log\"",
                 "--nologfile-per-isolate"
               ]
             }
@@ -50,8 +50,8 @@
           {
             "type": "node",
             "request": "launch",
-            "name": "deoptigate",
-            "program": "^\"\\${workspaceFolder}/app.js\"",
+            "name": "NS|deoptigate:app",
+            "program": "${workspaceFolder}/app.js",
             "runtimeArgs": [
               "--trace-ic",
               "--logfile=${workspaceFolder}/.vscode/deoptigate.log",
