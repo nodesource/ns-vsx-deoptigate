@@ -15,7 +15,27 @@
   ],
   "main": "./extension",
   "contributes": {
-    "commands": [],
+    "commands": [ {
+        "command": "deoptigate:menu.toggleLowSeverities",
+        "title": "Toggle Low Severity Annotations",
+        "category": "NS|Deoptigate"
+      }, {
+        "command": "deoptigate:menu.toggleInlineCaches",
+        "title": "Toggle Inline Cache Annotations",
+        "category": "NS|Deoptigate"
+      }, {
+        "command": "deoptigate:menu.toggleDeoptimizations",
+        "title": "Toggle Deoptimization Annotations",
+        "category": "NS|Deoptigate"
+      }
+    ],
+    "menus": {
+      "commandPalette": [{
+        "command": "deoptigate:menu.toggleLowSeverities",
+        "command": "deoptigate:menu.toggleInlineCaches",
+        "command": "deoptigate:menu.toggleDeoptimizations"
+      }]
+    },
     "debuggers": [
       {
         "type": "NodeSource",
