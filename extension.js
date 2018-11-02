@@ -41,7 +41,7 @@ function registerMenuCommands(subscriptions, deoptigateConfig) {
 }
 
 function activate(context) {
-  const deoptigateConfig = new DeoptigateConfig()
+  const deoptigateConfig = new DeoptigateConfig(context.globalState)
   registerMenuCommands(context.subscriptions, deoptigateConfig)
 
   const workspaceRoot = workspace.workspaceFolders[0]
