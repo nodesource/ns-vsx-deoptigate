@@ -33,6 +33,10 @@ function registerMenuCommands(subscriptions, deoptigateConfig) {
           'deoptigate:menu.toggleDeoptimizations'
         , () => deoptigateConfig.toggleDeoptimizations()
       )
+    , commands.registerCommand(
+          'deoptigate:menu.toggleOptimizations'
+        , () => deoptigateConfig.toggleOptimizations()
+      )
   ]
 
   for (const command of menuCommands) {
@@ -62,10 +66,14 @@ function activate(context) {
   context.subscriptions.push(showSummaryCommand)
 
   function ondeoptigateUpdate({ info, logFile }) {
-    const res = deoptigateProcessor.process(info)
-    summaryView.update(res, { projectRoot, logFile })
-    statusbar.update(res)
-    decorator.update(info)
+    try {
+      const res = deoptigateProcessor.process(info)
+      summaryView.update(res, { projectRoot, logFile })
+      statusbar.update(res)
+      decorator.update(info)
+    } catch (err) {
+      window.showErrorMessage(`Error when updating new deoptigate data\n`, err)
+    }
   }
 
   watcher

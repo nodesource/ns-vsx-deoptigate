@@ -27,14 +27,19 @@
         "command": "deoptigate:menu.toggleDeoptimizations",
         "title": "Toggle Deoptimization Annotations",
         "category": "NS|Deoptigate"
+      }, {
+        "command": "deoptigate:menu.toggleOptimizations",
+        "title": "Toggle Optimization Annotations",
+        "category": "NS|Deoptigate"
       }
     ],
     "menus": {
-      "commandPalette": [{
-        "command": "deoptigate:menu.toggleLowSeverities",
-        "command": "deoptigate:menu.toggleInlineCaches",
-        "command": "deoptigate:menu.toggleDeoptimizations"
-      }]
+      "commandPalette": [
+        { "command": "deoptigate:menu.toggleLowSeverities" },
+        { "command": "deoptigate:menu.toggleInlineCaches" } ,
+        { "command": "deoptigate:menu.toggleDeoptimizations" },
+        { "command": "deoptigate:menu.toggleOptimizations" }
+      ]
     },
     "debuggers": [
       {
